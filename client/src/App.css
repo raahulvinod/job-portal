@@ -140,6 +140,10 @@ li {
   border-color: #f7f7f7;
 }
 
+.mobile-menu {
+  transition: all 0.3s ease-in-out;
+}
+
 /* create a job page */
 
 .create-job-flex {

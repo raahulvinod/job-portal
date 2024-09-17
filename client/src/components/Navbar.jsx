@@ -19,6 +19,7 @@ const Navbar = () => {
   return (
     <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
       <nav className="flex justify-between items-center py-6">
+        {/* Logo */}
         <a href="/" className="flex items-center gap-2 text-2xl text-black">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +45,8 @@ const Navbar = () => {
           <span>JobHatch</span>
         </a>
 
-        {/*  Nav items for larger screens */}
-        <ul className="hidden md:flex gap-12">
+        {/* Nav items centered between logo and buttons */}
+        <ul className="hidden md:flex flex-grow justify-center gap-12">
           {navItems.map(({ path, title }) => (
             <li key={path} className="text-base text-primary">
               <NavLink
@@ -58,22 +59,20 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/*  Signup and Login buttons */}
-
-        <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
+        {/* Signup and Login buttons */}
+        <div className="text-base text-primary font-medium hidden lg:flex space-x-5">
           <Link to="/login" className="py-2 px-5 border rounded">
             Log in
           </Link>
           <Link
-            to="/login"
+            to="/signup"
             className="py-2 px-5 border rounded bg-blue text-white"
           >
             Signup
           </Link>
         </div>
 
-        {/*  Mobile navigation */}
-
+        {/* Mobile navigation */}
         <div>
           <button className="md:hidden block" onClick={handleMenuToggler}>
             {isMenuOpen ? (
@@ -84,10 +83,10 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
-      {/*  Nav items for mobile screens */}
 
+      {/* Nav items for mobile screens */}
       <div
-        className={`px-4 bg-black py-5 rounded-sm ${
+        className={`px-4 bg-black py-5 rounded-sm mobile-menu ${
           isMenuOpen ? '' : 'hidden'
         }`}
       >
