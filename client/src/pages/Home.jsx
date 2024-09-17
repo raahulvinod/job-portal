@@ -13,7 +13,6 @@ const Home = () => {
   return (
     <div>
       <Banner query={query} handleInputChange={handleInputChange} />
-      <Newsletter />
     </div>
   );
 };
