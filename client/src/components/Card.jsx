@@ -12,13 +12,14 @@ const Card = ({ data }) => {
     employmentType,
     postingDate,
     description,
+    jobTitle,
   } = data;
 
   return (
-    <section className="card">
+    <section className="m-5 border-2 border-gray-300 p-5 cursor-pointer">
       <Link to="/" className="flex gap-4 flex-col sm:flex-row items-start">
         <img src={companyLogo} alt="" />
-        <div>
+        <div className="card-details">
           <h4 className="text-primary mb-1">{companyName}</h4>
           <h3 className="text-lg font-semibold mb-2">{jobTitle}</h3>
 
