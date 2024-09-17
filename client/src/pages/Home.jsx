@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Banner from '../components/Banner';
+import Newsletter from '../components/Newsletter';
 
 const Home = () => {
   const [query, setQuery] = useState('');
@@ -12,6 +13,7 @@ const Home = () => {
   return (
     <div>
       <Banner query={query} handleInputChange={handleInputChange} />
+      <Newsletter />
     </div>
   );
 };
