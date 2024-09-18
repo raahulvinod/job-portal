@@ -4,6 +4,7 @@ import Banner from '../components/Banner';
 import Card from '../components/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
+import Newsletter from '../components/Newsletter';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -144,7 +145,9 @@ const Home = () => {
             </div>
           ) : null}
         </div>
-        <div className="bg-white p-4 rounded"></div>
+        <div className="bg-white p-4 rounded">
+          <Newsletter />
+        </div>
       </div>
     </div>
   );
