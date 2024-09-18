@@ -10,9 +10,14 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('jobs.json').then((res) => res.json().then((data) => setJobs(data)));
+    setIsLoading(false);
   }, []);
 
   // filter jobs by title
@@ -74,7 +79,7 @@ const Home = () => {
         </div>
         {/*  Job cards */}
         <div className="col-span-2 bg-white p-4 rounded">
-          <Jobs result={result} />
+          {isLoading ? <p>Loading...</p> : <Jobs result={result} />}
         </div>
         <div className="bg-white p-4 rounded"></div>
       </div>
