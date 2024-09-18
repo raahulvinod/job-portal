@@ -4,6 +4,7 @@ import Banner from '../components/Banner';
 import Newsletter from '../components/Newsletter';
 import Card from '../components/Card';
 import Jobs from './Jobs';
+import Sidebar from '../sidebar/Sidebar';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -13,8 +14,6 @@ const Home = () => {
   useEffect(() => {
     fetch('jobs.json').then((res) => res.json().then((data) => setJobs(data)));
   }, []);
-
-  console.log(jobs);
 
   // filter jobs by title
   const filteredItems = jobs.filter(
@@ -70,7 +69,9 @@ const Home = () => {
 
       {/* Main content */}
       <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
-        <div className="bg-white p-4 rounded"></div>
+        <div className="bg-white p-4 rounded">
+          <Sidebar handleChange={handleChange} handleClick={handleClick} />
+        </div>
         {/*  Job cards */}
         <div className="col-span-2 bg-white p-4 rounded">
           <Jobs result={result} />
