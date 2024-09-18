@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import Banner from '../components/Banner';
-import Newsletter from '../components/Newsletter';
 import Card from '../components/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
@@ -15,57 +14,79 @@ const Home = () => {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch('jobs.json').then((res) => res.json().then((data) => setJobs(data)));
-    setIsLoading(false);
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('jobs.json');
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchJobs();
   }, []);
 
-  // filter jobs by title
-  const filteredItems = jobs.filter(
-    (job) => job?.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
-  );
+  // Filter jobs by title and selected category
+  const filteredItems = jobs.filter((job) => {
+    const matchesQuery = job.jobTitle
+      .toLowerCase()
+      .includes(query.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? job.jobLocation.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
 
-  // side radio filter
-  const handleChange = (event) => {
-    setSelectedCategory(event.target.value);
+    return matchesQuery && matchesCategory;
+  });
+
+  // Calculate the index range for pagination
+  const calculatePageRange = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return { startIndex, endIndex };
   };
 
-  // Button based filter
-  const handleClick = (event) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  // Main filter
-  const filteredData = (jobs, selected, query) => {
-    let filteredJobs = filteredItems;
-
-    if (query) {
-      filteredJobs = filteredItems;
+  // Next page
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
     }
-    if (selected) {
-      filteredJobs = filteredJobs.filter(
-        ({
-          jobLocation,
-          maxPrice,
-          experienceLevel,
-          salaryType,
-          employmentType,
-          postingDate,
-        }) =>
-          jobLocation.toLowerCase() === selected.toLowerCase() ||
-          parseInt(maxPrice) <= parseInt(selected) ||
-          salaryType.toLowerCase() === selected.toLowerCase() ||
-          employmentType.toLowerCase() === selected.toLowerCase()
-      );
-    }
-
-    return filteredJobs.map((data, i) => <Card key={i} data={data} />);
   };
 
-  const result = filteredData(jobs, selectedCategory, query);
+  // Previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Get the filtered and paginated jobs
+  const filteredData = () => {
+    const { startIndex, endIndex } = calculatePageRange();
+    const paginatedJobs = filteredItems.slice(startIndex, endIndex);
+
+    return paginatedJobs.map((data, i) => <Card key={i} data={data} />);
+  };
+
+  // Re-calculate result whenever jobs, query, or selectedCategory changes
+  const result = filteredData();
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
+    setCurrentPage(1); // Reset to the first page when the query changes
+  };
+
+  const handleChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleClick = (event) => {
+    setSelectedCategory(event.target.value);
+    setCurrentPage(1);
   };
 
   return (
@@ -77,7 +98,7 @@ const Home = () => {
         <div className="bg-white p-4 rounded">
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
-        {/*  Job cards */}
+        {/* Job cards */}
         <div className="col-span-2 bg-white p-4 rounded">
           {isLoading ? (
             <div
@@ -96,6 +117,32 @@ const Home = () => {
               <p>No jobs found</p>
             </>
           )}
+
+          {/* Pagination */}
+          {result.length > 0 ? (
+            <div className="flex justify-center mt-4 space-x-8">
+              <button
+                className="hover:underline hover:text-blue"
+                onClick={prevPage}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="mx-2">
+                Page {currentPage} of{' '}
+                {Math.ceil(filteredItems.length / itemsPerPage)}
+              </span>
+              <button
+                className="hover:underline hover:text-blue"
+                onClick={nextPage}
+                disabled={
+                  currentPage === Math.ceil(filteredItems.length / itemsPerPage)
+                }
+              >
+                Next
+              </button>
+            </div>
+          ) : null}
         </div>
         <div className="bg-white p-4 rounded"></div>
       </div>
