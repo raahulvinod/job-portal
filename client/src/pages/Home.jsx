@@ -61,7 +61,7 @@ const Home = () => {
     let filteredJobs = jobs;
 
     if (query) {
-      filteredJobs = filteredItems;
+      filteredJobs = filteredItems; // Filter by job title (query)
     }
 
     if (selectedCategory) {
@@ -86,11 +86,20 @@ const Home = () => {
     const { startIndex, endIndex } = calculatePageRange();
     let paginatedJobs = filteredJobs.slice(startIndex, endIndex);
 
-    return paginatedJobs.map((data, i) => <Card key={i} data={data} />);
+    return {
+      paginatedJobs: paginatedJobs.map((data, i) => (
+        <Card key={i} data={data} />
+      )),
+      totalFilteredJobs: filteredJobs.length, // Return the total count of filtered jobs
+    };
   };
 
-  // Re-calculate result whenever jobs, query, or selectedCategory changes
-  const result = filteredData(jobs, selectedCategory, query);
+  // Re-calculate paginated jobs and total filtered jobs whenever jobs, query, or selectedCategory changes
+  const { paginatedJobs, totalFilteredJobs } = filteredData(
+    jobs,
+    selectedCategory,
+    query
+  );
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -127,17 +136,19 @@ const Home = () => {
                 Loading...
               </span>
             </div>
-          ) : result.length > 0 ? (
-            <Jobs result={result} />
+          ) : paginatedJobs.length > 0 ? (
+            <Jobs result={paginatedJobs} />
           ) : (
             <>
-              <h3 className="text-lg font-bold mb-4">{result.length} Jobs</h3>
+              <h3 className="text-lg font-bold mb-4">
+                {paginatedJobs.length} Jobs
+              </h3>
               <p>No jobs found</p>
             </>
           )}
 
           {/* Pagination */}
-          {result.length > 0 ? (
+          {totalFilteredJobs > 0 ? (
             <div className="flex justify-center mt-4 space-x-8">
               <button
                 className="hover:underline hover:text-blue"
@@ -148,13 +159,13 @@ const Home = () => {
               </button>
               <span className="mx-2">
                 Page {currentPage} of{' '}
-                {Math.ceil(filteredItems.length / itemsPerPage)}
+                {Math.ceil(totalFilteredJobs / itemsPerPage)}
               </span>
               <button
                 className="hover:underline hover:text-blue"
                 onClick={nextPage}
                 disabled={
-                  currentPage === Math.ceil(filteredItems.length / itemsPerPage)
+                  currentPage === Math.ceil(totalFilteredJobs / itemsPerPage)
                 }
               >
                 Next
