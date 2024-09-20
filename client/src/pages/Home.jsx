@@ -7,7 +7,7 @@ import Sidebar from '../sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
 
 const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -27,21 +27,13 @@ const Home = () => {
         setIsLoading(false);
       }
     };
-
     fetchJobs();
   }, []);
 
   // Filter jobs by title and selected category
-  const filteredItems = jobs.filter((job) => {
-    const matchesQuery = job.jobTitle
-      .toLowerCase()
-      .includes(query.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? job.jobLocation.toLowerCase() === selectedCategory.toLowerCase()
-      : true;
-
-    return matchesQuery && matchesCategory;
-  });
+  const filteredItems = jobs.filter(
+    (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
+  );
 
   // Calculate the index range for pagination
   const calculatePageRange = () => {
@@ -65,15 +57,40 @@ const Home = () => {
   };
 
   // Get the filtered and paginated jobs
-  const filteredData = () => {
+  const filteredData = (jobs, selectedCategory, query) => {
+    let filteredJobs = jobs;
+
+    if (query) {
+      filteredJobs = filteredItems;
+    }
+
+    if (selectedCategory) {
+      filteredJobs = filteredJobs.filter(
+        ({
+          jobLocation,
+          maxPrice,
+          salaryType,
+          experienceLevel,
+          employmentType,
+          postingDate,
+        }) =>
+          jobLocation.toLowerCase() === selectedCategory.toLowerCase() ||
+          postingDate >= selectedCategory ||
+          experienceLevel.toLowerCase() === selectedCategory.toLowerCase() ||
+          parseInt(maxPrice) <= parseInt(selectedCategory) ||
+          salaryType.toLowerCase() === selectedCategory.toLowerCase() ||
+          employmentType.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
     const { startIndex, endIndex } = calculatePageRange();
-    const paginatedJobs = filteredItems.slice(startIndex, endIndex);
+    let paginatedJobs = filteredJobs.slice(startIndex, endIndex);
 
     return paginatedJobs.map((data, i) => <Card key={i} data={data} />);
   };
 
   // Re-calculate result whenever jobs, query, or selectedCategory changes
-  const result = filteredData();
+  const result = filteredData(jobs, selectedCategory, query);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
