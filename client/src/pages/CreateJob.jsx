@@ -11,9 +11,30 @@ const CreateJob = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.skills = selectedOptions;
     console.log(data);
+    try {
+      const response = await fetch('http://localhost:8000/api/jobs/post-job', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log('Job created successfully:', result);
+        alert('Job created successfully!');
+      } else {
+        console.error('Failed to create job:', result.message);
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating job:', error);
+      alert('Error creating job. Please try again later.');
+    }
   };
 
   const options = [
@@ -112,11 +133,16 @@ const CreateJob = () => {
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Experience Level</label>
-              <select {...register('salaryType')} className="create-job-input">
+              <select
+                {...register('experienceLevel')}
+                className="create-job-input"
+              >
                 <option value="">Choose your experience</option>
-                <option value="NoExperience">No Experience</option>
-                <option value="Internship">Internship</option>
-                <option value="Work remotely">Work Remotely</option>
+                <option value="No Experience">No Experience</option>
+                <option value="Any Experience">Any experience</option>
+                <option value="Entry">Entry</option>
+                <option value="Mid">Mid</option>
+                <option value="Senior">Senior</option>
               </select>
             </div>
           </div>
@@ -145,11 +171,15 @@ const CreateJob = () => {
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg">Employment Type</label>
-              <select {...register('salaryType')} className="create-job-input">
+              <select
+                {...register('employmentType')}
+                className="create-job-input"
+              >
                 <option value="">Select your job type</option>
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
-                <option value="Temporary">Temporary</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
               </select>
             </div>
           </div>

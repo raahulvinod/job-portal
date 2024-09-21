@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   res.send('Hello world');
 });
 
-app.use('/api/job', jobRouter);
+app.use('/api/jobs', jobRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);

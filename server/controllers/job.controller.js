@@ -1,17 +1,116 @@
-export const getAllJobs = async (req, res) => {
+import Job from '../models/job.model.js';
+
+// Create a new job
+export const postJob = async (req, res) => {
+  const body = req.body;
+
   try {
-    // Your code here
+    const newJob = new Job(body);
+    const savedJob = await newJob.save();
+
+    res.status(201).json({
+      message: 'Job created successfully',
+      job: savedJob,
+    });
   } catch (error) {
-    // Handle the error
+    res.status(500).json({
+      message: 'Error creating job',
+      error: error.message,
+    });
   }
 };
 
-export const postJob = async (req, res) => {
+// Update a job by ID
+export const updateJob = async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
   try {
-    const body = req.body;
-    body.createAt = new Date();
-    console.log(body);
+    const updatedJob = await Job.findByIdAndUpdate(id, updates, {
+      new: true, // return the updated document
+      runValidators: true, // ensure the updates match the schema
+    });
+
+    if (!updatedJob) {
+      return res.status(404).json({
+        message: 'Job not found',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Job updated successfully',
+      job: updatedJob,
+    });
   } catch (error) {
-    // Handle the error
+    res.status(500).json({
+      message: 'Error updating job',
+      error: error.message,
+    });
+  }
+};
+
+// Delete a job by ID
+export const deleteJob = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedJob = await Job.findByIdAndDelete(id);
+
+    if (!deletedJob) {
+      return res.status(404).json({
+        message: 'Job not found',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Job deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error deleting job',
+      error: error.message,
+    });
+  }
+};
+
+// Get all jobs
+export const getAllJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find();
+
+    res.status(200).json({
+      message: 'Jobs fetched successfully',
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching jobs',
+      error: error.message,
+    });
+  }
+};
+
+// Get a job by ID
+export const getJob = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const job = await Job.findById(id);
+
+    if (!job) {
+      return res.status(404).json({
+        message: 'Job not found',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Job fetched successfully',
+      job,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching job',
+      error: error.message,
+    });
   }
 };
