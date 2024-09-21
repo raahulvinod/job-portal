@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import CreatableSelect from 'react-select/creatable';
 
 const CreateJob = () => {
   const [selectedOptions, setSelectedOptions] = useState(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,6 +29,7 @@ const CreateJob = () => {
       if (response.ok) {
         console.log('Job created successfully:', result);
         alert('Job created successfully!');
+        navigate('/my-job');
       } else {
         console.error('Failed to create job:', result.message);
         alert(`Error: ${result.message}`);
