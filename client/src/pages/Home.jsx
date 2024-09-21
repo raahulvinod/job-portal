@@ -18,9 +18,9 @@ const Home = () => {
     const fetchJobs = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('jobs.json');
-        const data = await response.json();
-        setJobs(data);
+        const response = await fetch('http://localhost:8000/api/jobs/all-jobs');
+        const { jobs } = await response.json();
+        setJobs(jobs);
       } catch (error) {
         console.error('Error fetching jobs:', error);
       } finally {

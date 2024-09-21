@@ -114,3 +114,28 @@ export const getJob = async (req, res) => {
     });
   }
 };
+
+// Get jobs by postedBy email
+export const getJobByEmail = async (req, res) => {
+  const { email } = req.params;
+  try {
+    // Find jobs where the 'postedBy' field matches the email
+    const jobs = await Job.find({ postedBy: email });
+
+    if (jobs.length === 0) {
+      return res.status(404).json({
+        message: 'No jobs found for this email',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Jobs fetched successfully',
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching jobs',
+      error: error.message,
+    });
+  }
+};
