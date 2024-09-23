@@ -2,23 +2,21 @@ import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader';
 
 const SalaryPage = () => {
-  const [searchtext, setSearchtext] = useState('');
+  const [searchText, setSearchText] = useState('');
   const [salary, setSalary] = useState([]);
 
   useEffect(() => {
     fetch('salary.json')
       .then((res) => res.json())
       .then((data) => setSalary(data));
-  }, [searchtext]);
+  }, [searchText]);
 
   const handleSearch = () => {
-    const filter = jobs.filter((job) =>
+    const filter = salary.filter((job) =>
       job.title.toLowerCase().includes(searchText.toLowerCase())
     );
     setSalary(filter);
   };
-
-  console.log(salary);
 
   return (
     <div className="max-w-screen-2xl container  mc-auto xl:px-24 px-4">
@@ -31,7 +29,7 @@ const SalaryPage = () => {
             name="search"
             id="search"
             className="py-2 pl-3 border focus:outline-none lg:w-6/12 mb-4 w-full"
-            onChange={(e) => setSearchtext(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <button
             onClick={handleSearch}
@@ -44,20 +42,22 @@ const SalaryPage = () => {
 
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-12 my-12 items-center">
         {salary.map((data) => {
-          <div key={data.id} className="shadow px-4 py-8">
-            <h4 className="font-semibold text-xl">{data.title}</h4>
-            <p className="my-2 font-medium text-blue-500 text-lg">
-              {data.salary}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="/" className="underline">
-                {data.status}
-              </a>
-              <a href="/" className="underline">
-                {data.Skills}
-              </a>
+          return (
+            <div key={data.id} className="shadow px-4 py-8">
+              <h4 className="text-blue font-semibold text-xl">{data.title}</h4>
+              <p className="my-2 font-medium text-blue-500 text-lg">
+                {data.salary}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a href="/" className="underline">
+                  {data.status}
+                </a>
+                <a href="/" className="underline">
+                  {data.Skills}
+                </a>
+              </div>
             </div>
-          </div>;
+          );
         })}
       </div>
     </div>
