@@ -42,6 +42,7 @@ export const updateJob = async (req, res) => {
       job: updatedJob,
     });
   } catch (error) {
+    console.error('Error updating job:', error.message);
     res.status(500).json({
       message: 'Error updating job',
       error: error.message,

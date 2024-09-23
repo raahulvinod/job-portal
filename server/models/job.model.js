@@ -47,18 +47,7 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  skills: [
-    {
-      value: {
-        type: String,
-        required: true,
-      },
-      label: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  skills: [{ type: String, required: true }],
   postedBy: {
     type: String,
     required: true,

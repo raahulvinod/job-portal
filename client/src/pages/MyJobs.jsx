@@ -85,6 +85,8 @@ const MyJobs = () => {
     }
   };
 
+  console.log(jobs);
+
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
       <div className="my-jobs-container">

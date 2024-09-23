@@ -15,6 +15,14 @@ const Card = ({ data }) => {
     jobTitle,
   } = data;
 
+  console.log(postingDate);
+
+  const formattedDate = new Date(postingDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <section className="m-5 border-2 border-gray-300 p-5 cursor-pointer">
       <Link to="/" className="flex gap-4 flex-col sm:flex-row items-start">
@@ -34,11 +42,14 @@ const Card = ({ data }) => {
               <FiDollarSign /> {minPrice}-{maxPrice}k{' '}
             </span>
             <span className="flex items-center gap-2">
-              <FiCalendar /> {postingDate}{' '}
+              <FiCalendar /> {formattedDate}{' '}
             </span>
           </div>
-
-          <p className="text-base text-primary/70">{description}</p>
+          <p className="text-base text-primary/70">
+            {description.length > 100
+              ? `${description.slice(0, 100)}...`
+              : description}
+          </p>
         </div>
       </Link>
     </section>
