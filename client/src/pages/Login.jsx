@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
@@ -9,6 +11,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-8">
@@ -20,9 +23,37 @@ const Login = () => {
             <Formik
               initialValues={{ email: '', password: '' }}
               validationSchema={LoginSchema}
-              onSubmit={(values) => {
-                // Handle form submission
-                console.log(values);
+              onSubmit={async (values, { setSubmitting, setErrors }) => {
+                try {
+                  const response = await fetch(
+                    'http://localhost:8000/api/users/login',
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(values),
+                    }
+                  );
+
+                  if (!response.ok) {
+                    const errorData = await response.json();
+                    setErrors({
+                      email: errorData.message || 'An error occurred',
+                    });
+                    return;
+                  }
+
+                  const data = await response.json();
+                  console.log('User login successfully:', data);
+                  toast.success('User login successfully');
+                  navigate('/');
+                } catch (error) {
+                  console.error('Error:', error);
+                  setErrors({ email: 'Network error, please try again' });
+                } finally {
+                  setSubmitting(false);
+                }
               }}
             >
               {({ isSubmitting }) => (

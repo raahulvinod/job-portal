@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 // Validation schema using Yup
 const SignupSchema = Yup.object().shape({
@@ -26,9 +27,36 @@ const Signup = () => {
             <Formik
               initialValues={{ fullname: '', email: '', password: '' }}
               validationSchema={SignupSchema}
-              onSubmit={(values) => {
-                // Handle form submission
-                console.log(values);
+              onSubmit={async (values, { setSubmitting, setErrors }) => {
+                try {
+                  const response = await fetch(
+                    'http://localhost:8000/api/users/signup',
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(values),
+                    }
+                  );
+
+                  if (!response.ok) {
+                    const errorData = await response.json();
+                    setErrors({
+                      email: errorData.message || 'An error occurred',
+                    });
+                    return;
+                  }
+
+                  const data = await response.json();
+                  console.log('User registered successfully:', data);
+                  toast.success('User registered successfully');
+                } catch (error) {
+                  console.error('Error:', error);
+                  setErrors({ email: 'Network error, please try again' });
+                } finally {
+                  setSubmitting(false);
+                }
               }}
             >
               {({ isSubmitting }) => (
