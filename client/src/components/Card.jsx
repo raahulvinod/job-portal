@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { FiMapPin, FiCalendar, FiDollarSign, FiClock } from 'react-icons/fi';
+import { FiMapPin, FiCalendar, FiClock } from 'react-icons/fi';
+import { LiaRupeeSignSolid } from 'react-icons/lia';
 
 const Card = ({ data }) => {
   const {
@@ -14,8 +15,6 @@ const Card = ({ data }) => {
     description,
     jobTitle,
   } = data;
-
-  console.log(postingDate);
 
   const formattedDate = new Date(postingDate).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -33,16 +32,17 @@ const Card = ({ data }) => {
 
           <div className="text-primary/70 text-base flex flex-wrap gap-2 mb-2">
             <span className="flex items-center gap-2">
-              <FiMapPin /> {jobLocation}{' '}
+              <FiMapPin /> {jobLocation}
             </span>
             <span className="flex items-center gap-2">
-              <FiClock /> {employmentType}{' '}
+              <FiClock /> {employmentType}
+            </span>
+            <span className="flex items-center gap-1">
+              <LiaRupeeSignSolid />
+              {minPrice}-{maxPrice}k{' '}
             </span>
             <span className="flex items-center gap-2">
-              <FiDollarSign /> {minPrice}-{maxPrice}k{' '}
-            </span>
-            <span className="flex items-center gap-2">
-              <FiCalendar /> {formattedDate}{' '}
+              <FiCalendar /> {formattedDate}
             </span>
           </div>
           <p className="text-base text-primary/70">
