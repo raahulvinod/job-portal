@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 
 const MyJobs = () => {
-  const email = 'rahulvinod135@gmail.com';
   const [jobs, setJobs] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemPerPage = 4;
+
+  const {
+    userAuth: { email },
+  } = useContext(UserContext);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -84,8 +88,6 @@ const MyJobs = () => {
       }
     }
   };
-
-  console.log(jobs);
 
   return (
     <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">

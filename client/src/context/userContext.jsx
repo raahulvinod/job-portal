@@ -9,8 +9,6 @@ export const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [userAuth, setUserAuth] = useState(null);
 
-  console.log(userAuth);
-
   useEffect(() => {
     const userInSession = lookInSession('user');
     const token = lookInSession('token');
