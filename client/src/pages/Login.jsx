@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+
+import { UserContext } from '../context/userContext';
+import { storeInSession } from '../utils/sessions';
 
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
@@ -11,6 +14,8 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const { userAuth, setUserAuth } = useContext(UserContext);
+
   const navigate = useNavigate();
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -45,7 +50,17 @@ const Login = () => {
                   }
 
                   const data = await response.json();
-                  console.log('User login successfully:', data);
+
+                  // Store token and user data in session storage
+                  storeInSession('token', data.token);
+                  storeInSession('user', JSON.stringify(data.user));
+
+                  // Update context with user data
+                  setUserAuth({
+                    ...data.user,
+                    access_token: data.token,
+                  });
+
                   toast.success('User login successfully');
                   navigate('/');
                 } catch (error) {

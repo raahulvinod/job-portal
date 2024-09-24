@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaBarsStaggered, FaXmark } from 'react-icons/fa6';
+import { UserContext } from '../context/userContext';
+import { removeFromSession } from '../utils/sessions';
 
 const Navbar = () => {
+  const { userAuth, setUserAuth } = useContext(UserContext);
   const [isMenuOpen, setisMenuOpen] = useState(false);
 
   const handleMenuToggler = () => {
     setisMenuOpen(!isMenuOpen);
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    removeFromSession('user');
+    removeFromSession('token');
+    setUserAuth({ access_token: null });
   };
 
   const navItems = [
@@ -59,17 +69,33 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Signup and Login buttons */}
+        {/* Authenticated: Show Logout and Profile or Login/Signup */}
         <div className="text-base text-primary font-medium hidden lg:flex space-x-5">
-          <Link to="/login" className="py-2 px-5 border rounded">
-            Log in
-          </Link>
-          <Link
-            to="/signup"
-            className="py-2 px-5 border rounded bg-blue text-white"
-          >
-            Signup
-          </Link>
+          {userAuth?.access_token ? (
+            <>
+              <button
+                onClick={handleLogout}
+                className="py-2 px-5 border rounded"
+              >
+                Logout
+              </button>
+              <Link to="/profile" className="py-2 px-5 border rounded">
+                {userAuth.name || 'Profile'}
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="py-2 px-5 border rounded">
+                Log in
+              </Link>
+              <Link
+                to="/signup"
+                className="py-2 px-5 border rounded bg-blue text-white"
+              >
+                Signup
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile navigation */}
@@ -105,9 +131,20 @@ const Navbar = () => {
             </li>
           ))}
 
-          <li className="text-white py-1">
-            <Link to="/login">Log in</Link>
-          </li>
+          {userAuth?.access_token ? (
+            <>
+              <li className="text-white py-1">
+                <button onClick={handleLogout}>Logout</button>
+              </li>
+              <li className="text-white py-1">
+                <Link to="/profile">Profile</Link>
+              </li>
+            </>
+          ) : (
+            <li className="text-white py-1">
+              <Link to="/login">Log in</Link>
+            </li>
+          )}
         </ul>
       </div>
     </header>
