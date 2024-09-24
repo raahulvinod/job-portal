@@ -5,12 +5,12 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import CreateJob from '../pages/CreateJob';
 import MyJobs from '../pages/MyJobs';
-import SalaryPage from '../pages/SalaryPage';
 import UpdateJob from '../pages/UpdateJob';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Profile from '../pages/Profile';
+import Discover from '../pages/Discover';
 
 const router = createBrowserRouter([
   {
@@ -36,10 +36,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/salary',
+        path: '/discover',
         element: (
           <ProtectedRoute>
-            <SalaryPage />
+            <Discover />
           </ProtectedRoute>
         ),
       },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader';
 
-const SalaryPage = () => {
+const Discover = () => {
   const [searchText, setSearchText] = useState('');
   const [salary, setSalary] = useState([]);
 
@@ -20,7 +20,7 @@ const SalaryPage = () => {
 
   return (
     <div className="max-w-screen-2xl container  mc-auto xl:px-24 px-4">
-      <PageHeader title={'Estimate Salary'} path={'Salary'} />
+      <PageHeader title={'Explore Jobs'} path={'search jobs'} />
 
       <div className="mt-5">
         <div className="search-box p-2 text-center mb-2">
@@ -64,4 +64,4 @@ const SalaryPage = () => {
   );
 };
 
-export default SalaryPage;
+export default Discover;
