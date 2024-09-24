@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { FaBarsStaggered, FaXmark } from 'react-icons/fa6';
 import { UserContext } from '../context/userContext';
 import { removeFromSession } from '../utils/sessions';
+import ProfileDropdown from './ProfileDropdown';
 
 const Navbar = () => {
   const { userAuth, setUserAuth } = useContext(UserContext);
@@ -73,15 +74,10 @@ const Navbar = () => {
         <div className="text-base text-primary font-medium hidden lg:flex space-x-5">
           {userAuth?.access_token ? (
             <>
-              <button
-                onClick={handleLogout}
-                className="py-2 px-5 border rounded"
-              >
-                Logout
-              </button>
-              <Link to="/profile" className="py-2 px-5 border rounded">
-                {userAuth.name || 'Profile'}
-              </Link>
+              <ProfileDropdown
+                fullname={userAuth.fullname}
+                handleLogout={handleLogout}
+              />
             </>
           ) : (
             <>
