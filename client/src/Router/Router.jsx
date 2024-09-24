@@ -10,6 +10,7 @@ import UpdateJob from '../pages/UpdateJob';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
+import Profile from '../pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
       },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <Signup /> },
+      {
+        path: '/profile',
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);

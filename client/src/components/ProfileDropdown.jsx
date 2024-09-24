@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ProfileDropdown = ({ fullname, handleLogout }) => {
   const [open, setOpen] = useState(false);
@@ -35,8 +36,8 @@ const ProfileDropdown = ({ fullname, handleLogout }) => {
           <div className="absolute w-60 px-5 py-3 dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5 transition ease-out duration-100 transform opacity-100 scale-100">
             <ul className="space-y-3 dark:text-white">
               <li className="font-medium">
-                <a
-                  href="#"
+                <Link
+                  to="/profile"
                   className="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-indigo-700"
                 >
                   <div className="mr-3">
@@ -55,14 +56,11 @@ const ProfileDropdown = ({ fullname, handleLogout }) => {
                       ></path>
                     </svg>
                   </div>
-                  Account
-                </a>
+                  Profile
+                </Link>
               </li>
               <li className="font-medium">
-                <a
-                  href="#"
-                  className="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-indigo-700"
-                >
+                <Link className="flex items-center transform transition-colors duration-200 border-r-4 border-transparent hover:border-indigo-700">
                   <div className="mr-3">
                     <svg
                       className="w-6 h-6"
@@ -86,7 +84,7 @@ const ProfileDropdown = ({ fullname, handleLogout }) => {
                     </svg>
                   </div>
                   Setting
-                </a>
+                </Link>
               </li>
               <hr className="dark:border-gray-700" />
               <li className="font-medium">
