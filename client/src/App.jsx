@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/Navbar';
 import UserProvider from './context/userContext';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Toaster />
         <Navbar />
         <Outlet />
+        <Footer />
       </UserProvider>
     </>
   );

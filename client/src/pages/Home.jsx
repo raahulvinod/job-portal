@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import Banner from '../components/Banner';
 import Card from '../components/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
 import Newsletter from '../components/Newsletter';
+import Hero from '../components/Hero';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(false);
@@ -118,7 +118,7 @@ const Home = () => {
 
   return (
     <div>
-      <Banner query={query} handleInputChange={handleInputChange} />
+      <Hero query={query} handleInputChange={handleInputChange} />
 
       {/* Main content */}
       <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">

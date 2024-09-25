@@ -212,7 +212,7 @@ const CreateJob = () => {
 
           <div className="w-full text-right">
             <input
-              className="my-5 inline-block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-sm cursor-pointer"
+              className="my-5 inline-block mt-12 bg-gray-900 hover:bg-gray-600 text-white font-semibold px-8 py-2 rounded-sm cursor-pointer"
               type="submit"
             />
           </div>

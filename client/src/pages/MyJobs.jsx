@@ -99,11 +99,12 @@ const MyJobs = () => {
             type="text"
             name="search"
             id="search"
-            className="py-2 p1-3 border focus:outline-none lg:w-6/12 mb-4 w-full"
+            className="py-2 p1-3 border border-gray-900 lg:w-6/12 mb-4 w-full rounded-md"
           />
           <button
             onClick={handleSearch}
-            className="bg-blue text-white font-semibold px-8 py-2 rounded-sm mb-4"
+            type="submit"
+            className="relative ml-2 inline-flex items-center justify-center px-8 py-2 text-lg font-semibold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
           >
             Search
           </button>
@@ -190,7 +191,7 @@ const MyJobs = () => {
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                           <button
                             onClick={() => handleDelete(job._id)}
-                            className="bg-red-600 hover:bg-red-700 py-2 px-6 text-white rounded-sm"
+                            className="bg-gray-900 hover:bg-gray-600 py-2 px-6 text-white rounded-full"
                           >
                             Delete
                           </button>

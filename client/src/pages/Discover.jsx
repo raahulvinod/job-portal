@@ -33,7 +33,7 @@ const Discover = () => {
           />
           <button
             onClick={handleSearch}
-            className="bg-blue text-white font-semibold px-8 py-2 rounded-sm mb-4"
+            className="bg-gray-900 hover:bg-gray-500 text-white font-semibold px-8 py-2 rounded-sm mb-4"
           >
             Search
           </button>
