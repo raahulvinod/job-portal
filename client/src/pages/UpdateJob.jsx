@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import CreatableSelect from 'react-select/creatable';
+import toast from 'react-hot-toast';
 
 const UpdateJob = () => {
   const { id } = useParams();
@@ -77,7 +78,7 @@ const UpdateJob = () => {
       const result = await response.json();
       if (response.ok) {
         console.log('Job updated successfully:', result);
-        alert('Job updated successfully!');
+        toast.success('Job updated successfully!');
         navigate('/my-job');
       } else {
         console.error('Failed to update job:', result.message);

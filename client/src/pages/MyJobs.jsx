@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import toast from 'react-hot-toast';
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -79,7 +80,7 @@ const MyJobs = () => {
         }
 
         const result = await response.json();
-        alert(result.message);
+        toast.success(result.message);
 
         setJobs(jobs.filter((job) => job._id !== jobId));
       } catch (error) {

@@ -20,11 +20,11 @@ const Profile = () => {
   };
 
   return (
-    <div className="relative flex flex-col w-full container mx-auto xl:px-24 px-4 min-w-0 mb-6 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30 draggable">
+    <div className="flex flex-col w-full container mx-auto xl:px-24 px-4 min-w-0 mb-6 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30 draggable">
       <div className="px-9 pt-9 flex-auto min-h-[70px] pb-0 bg-transparent">
         <div className="flex flex-wrap mb-6 xl:flex-nowrap">
           <div className="mb-5 mr-5">
-            <div className="relative inline-block shrink-0 rounded-2xl">
+            <div className="inline-block shrink-0 rounded-2xl">
               <img
                 className="inline-block shrink-0 rounded-2xl w-[80px] h-[80px] lg:w-[160px] lg:h-[160px]"
                 src="https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_640.png"

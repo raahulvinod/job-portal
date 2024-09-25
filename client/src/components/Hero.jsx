@@ -13,10 +13,9 @@ const Hero = ({ query, handleInputChange }) => {
             Connecting Talent with Opportunity
           </h1>
           <p className="max-w-md mx-auto mt-6 text-base leading-7 text-gray-600 font-inter">
-            At JobHatch, we help you find your dream job. Whether you're an
-            experienced professional or just starting out, explore thousands of
-            job listings and connect with top employers looking for talents like
-            you.
+            We help you find your dream job. Whether you're an experienced
+            professional or just starting out, explore thousands of job listings
+            and connect with top employers looking for talents like you.
           </p>
 
           <div className="relative inline-flex mt-10 group">
@@ -48,8 +47,6 @@ const Hero = ({ query, handleInputChange }) => {
               name="title"
               id="title"
               placeholder="What position are you looking for?"
-              onChange={handleInputChange}
-              value={query}
               className="block flex-1 border-none outline-none bg-transparent py-2 pl-2 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
             />
           </div>
@@ -62,6 +59,8 @@ const Hero = ({ query, handleInputChange }) => {
               name="location"
               id="location"
               placeholder="Location"
+              onChange={handleInputChange}
+              value={query}
               className="block flex-1 border-none outline-none bg-transparent py-2 pl-2 pr-4 text-gray-300 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
             />
           </div>

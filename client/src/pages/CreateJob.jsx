@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import CreatableSelect from 'react-select/creatable';
@@ -31,11 +32,11 @@ const CreateJob = () => {
       const result = await response.json();
       if (response.ok) {
         console.log('Job created successfully:', result);
-        alert('Job created successfully!');
+       toast.success('Job created successfully!');
         navigate('/my-job');
       } else {
         console.error('Failed to create job:', result.message);
-        alert(`Error: ${result.message}`);
+        toast.error(`Error: ${result.message}`);
       }
     } catch (error) {
       console.error('Error creating job:', error);
