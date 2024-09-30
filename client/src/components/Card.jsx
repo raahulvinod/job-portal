@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 
 const Card = ({ data }) => {
-  console.log(data);
   const {
     _id,
     companyName,
@@ -65,7 +64,7 @@ const Card = ({ data }) => {
           </div>
         </div>
         <div>
-          <button className="bg-purple-900 hover:bg-purple-600 text-white font-medium px-4 py-2 rounded-md flex gap-1 items-center">
+          <button className="bg-purple-900 hover:bg-purple-800 text-white font-medium px-4 py-2 rounded-md flex gap-1 items-center">
             Apply Now
             <svg
               xmlns="http://www.w3.org/2000/svg"

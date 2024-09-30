@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { path: '/', title: 'Start a search' },
+    { path: '/', title: 'Home' },
     { path: '/my-job', title: 'My Jobs' },
     { path: '/discover', title: 'Discover' },
     { path: '/post-job', title: 'Post A Job' },

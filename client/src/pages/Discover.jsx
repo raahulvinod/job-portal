@@ -44,7 +44,9 @@ const Discover = () => {
         {salary.map((data) => {
           return (
             <div key={data.id} className="shadow px-4 py-8">
-              <h4 className="text-blue font-semibold text-xl">{data.title}</h4>
+              <h4 className="text-purple-800 font-semibold text-xl">
+                {data.title}
+              </h4>
               <p className="my-2 font-medium text-blue-500 text-lg">
                 {data.salary}
               </p>
