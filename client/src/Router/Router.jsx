@@ -11,6 +11,7 @@ import Signup from '../pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Profile from '../pages/Profile';
 import Discover from '../pages/Discover';
+import JobDetails from '../pages/JobDetails';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: '/job/:id', element: <JobDetails /> },
     ],
   },
 ]);

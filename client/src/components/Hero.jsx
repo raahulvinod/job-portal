@@ -28,14 +28,6 @@ const Hero = ({ query, handleInputChange }) => {
         </div>
       </div>
 
-      <div className="mt-16 md:mt-20 py-2">
-        <img
-          className="object-cover object-top w-full h-auto mx-auto scale-150 2xl:max-w-screen-2xl xl:scale-100"
-          src="images/Hero1.jpg"
-          alt="Hero Illustration"
-        />
-      </div>
-
       {/* Search Form */}
       <form className="max-w-screen-2xl container mx-auto xl:px-24 px-4 md:py-8 py-14 md:mt-8">
         <div className="flex justify-start md:flex-row flex-col md:gap-1 gap-4">
@@ -46,6 +38,8 @@ const Hero = ({ query, handleInputChange }) => {
               type="text"
               name="title"
               id="title"
+              onChange={handleInputChange}
+              value={query}
               placeholder="What position are you looking for?"
               className="block flex-1 border-none outline-none bg-transparent py-2 pl-2 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
             />
@@ -59,8 +53,6 @@ const Hero = ({ query, handleInputChange }) => {
               name="location"
               id="location"
               placeholder="Location"
-              onChange={handleInputChange}
-              value={query}
               className="block flex-1 border-none outline-none bg-transparent py-2 pl-2 pr-4 text-gray-300 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
             />
           </div>

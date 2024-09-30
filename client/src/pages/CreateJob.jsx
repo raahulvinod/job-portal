@@ -32,7 +32,7 @@ const CreateJob = () => {
       const result = await response.json();
       if (response.ok) {
         console.log('Job created successfully:', result);
-       toast.success('Job created successfully!');
+        toast.success('Job created successfully!');
         navigate('/my-job');
       } else {
         console.error('Failed to create job:', result.message);
@@ -91,7 +91,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Mininmum Salary</label>
               <input
                 type="text"
-                placeholder="₹20k"
+                placeholder="₹ 20,000"
                 {...register('minPrice')}
                 className="create-job-input"
               />
@@ -100,7 +100,7 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Maximum Salary</label>
               <input
                 type="text"
-                placeholder="₹120k"
+                placeholder="₹ 1,20,000"
                 {...register('maxPrice')}
                 className="create-job-input"
               />

@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
-import Newsletter from '../components/Newsletter';
 import Hero from '../components/Hero';
 
 const Home = () => {
@@ -68,7 +67,6 @@ const Home = () => {
       filteredJobs = filteredJobs.filter(
         ({
           jobLocation,
-          maxPrice,
           salaryType,
           experienceLevel,
           employmentType,
@@ -77,7 +75,6 @@ const Home = () => {
           jobLocation.toLowerCase() === selectedCategory.toLowerCase() ||
           postingDate >= selectedCategory ||
           experienceLevel.toLowerCase() === selectedCategory.toLowerCase() ||
-          parseInt(maxPrice) <= parseInt(selectedCategory) ||
           salaryType.toLowerCase() === selectedCategory.toLowerCase() ||
           employmentType.toLowerCase() === selectedCategory.toLowerCase()
       );
@@ -121,12 +118,9 @@ const Home = () => {
       <Hero query={query} handleInputChange={handleInputChange} />
 
       {/* Main content */}
-      <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
-        <div className="bg-white p-4 rounded">
-          <Sidebar handleChange={handleChange} handleClick={handleClick} />
-        </div>
+      <div className="bg-gray-50 md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
         {/* Job cards */}
-        <div className="col-span-2 bg-white p-4 rounded">
+        <div className="col-span-2 p-4 rounded">
           {isLoading ? (
             <div
               className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -173,8 +167,9 @@ const Home = () => {
             </div>
           ) : null}
         </div>
-        <div className="bg-white p-4 rounded">
-          <Newsletter />
+        {/* Filters (Sidebar) */}
+        <div className="col-span-1  p-4 rounded">
+          <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
       </div>
     </div>

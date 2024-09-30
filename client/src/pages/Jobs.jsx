@@ -5,7 +5,6 @@ const Jobs = ({ result }) => {
     <>
       <div>
         <h3 className="text-lg font-bold mb-4">{result.length} Jobs</h3>
-        <h3></h3>
       </div>
       <section>{result}</section>
     </>
