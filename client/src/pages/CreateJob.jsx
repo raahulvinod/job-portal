@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import CreatableSelect from 'react-select/creatable';
+import { UserContext } from '../context/userContext';
 
 const CreateJob = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -15,32 +17,34 @@ const CreateJob = () => {
     formState: { errors },
   } = useForm();
 
+  const {
+    userAuth: { access_token },
+  } = useContext(UserContext);
+
   const onSubmit = async (data) => {
     data.skills = selectedOptions
       ? selectedOptions.map((option) => option.value)
       : [];
 
     try {
-      const response = await fetch('http://localhost:8000/api/jobs/post-job', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await axios.post(
+        import.meta.env.VITE_SERVER_DOMAIN + '/jobs/post-job',
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
-      const result = await response.json();
-      if (response.ok) {
-        console.log('Job created successfully:', result);
+      if (response.status === 201) {
+        console.log('Job created successfully:', response.data);
         toast.success('Job created successfully!');
         navigate('/my-job');
-      } else {
-        console.error('Failed to create job:', result.message);
-        toast.error(`Error: ${result.message}`);
       }
     } catch (error) {
-      console.error('Error creating job:', error);
-      alert('Error creating job. Please try again later.');
+      console.error('Error creating job:', error.message);
+      toast.error('Error creating job. Please try again later.');
     }
   };
 
@@ -112,9 +116,9 @@ const CreateJob = () => {
               <label className="block mb-2 text-lg">Salary Type</label>
               <select {...register('salaryType')} className="create-job-input">
                 <option value="">Choose your salary</option>
-                <option value="Hourly">Hourly</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Yearly">Yearly</option>
+                <option value="Hour">Hourly</option>
+                <option value="Month">Monthly</option>
+                <option value="Year">Yearly</option>
               </select>
             </div>
             <div className="lg:w-1/2 w-full">
@@ -206,7 +210,7 @@ const CreateJob = () => {
             <input
               type="rmail"
               placeholder="Your email"
-              {...register('postedBy')}
+              {...register('email')}
               className="create-job-input"
             />
           </div>

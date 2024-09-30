@@ -1,11 +1,14 @@
 import Job from '../models/job.model.js';
 
-// Create a new job
 export const postJob = async (req, res) => {
   const body = req.body;
 
   try {
-    const newJob = new Job(body);
+    const newJob = new Job({
+      ...body,
+      postedBy: req.user,
+    });
+
     const savedJob = await newJob.save();
 
     res.status(201).json({
@@ -126,6 +129,31 @@ export const getJobByEmail = async (req, res) => {
     if (jobs.length === 0) {
       return res.status(404).json({
         message: 'No jobs found for this email',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Jobs fetched successfully',
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching jobs',
+      error: error.message,
+    });
+  }
+};
+
+export const getJobByUser = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    // Find jobs where 'postedBy' field matches the userId
+    const jobs = await Job.find({ postedBy: userId });
+
+    if (jobs.length === 0) {
+      return res.status(404).json({
+        message: 'No jobs found for this user',
       });
     }
 

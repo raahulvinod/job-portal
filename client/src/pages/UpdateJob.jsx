@@ -153,9 +153,9 @@ const UpdateJob = () => {
               <label className="block mb-2 text-lg">Salary Type</label>
               <select {...register('salaryType')} className="create-job-input">
                 <option value={salaryType}>{salaryType}</option>
-                <option value="Hourly">Hourly</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Yearly">Yearly</option>
+                <option value="Hour">Hourly</option>
+                <option value="Month">Monthly</option>
+                <option value="Year">Yearly</option>
               </select>
             </div>
             <div className="lg:w-1/2 w-full">
@@ -241,7 +241,7 @@ const UpdateJob = () => {
             <label className="block mb-2 text-lg">Job Posted By</label>
             <input
               type="email"
-              {...register('postedBy')}
+              {...register('email')}
               className="create-job-input"
             />
           </div>

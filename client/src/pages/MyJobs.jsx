@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -11,7 +12,7 @@ const MyJobs = () => {
   const itemPerPage = 4;
 
   const {
-    userAuth: { email },
+    userAuth: { access_token },
   } = useContext(UserContext);
 
   useEffect(() => {
@@ -19,25 +20,30 @@ const MyJobs = () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch(
-          `http://localhost:8000/api/jobs/by-email/${email}`
+        const response = await axios.post(
+          import.meta.env.VITE_SERVER_DOMAIN + '/jobs/my-jobs',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
         );
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch jobs: ${response.statusText}`);
+        if (response.status !== 201) {
         }
 
-        const { jobs } = await response.json();
-        setJobs(jobs);
+        setJobs(response.data.jobs);
       } catch (error) {
-        alert(error.message);
+        console.error('Error fetching job:', error.message);
+        toast.error('Error fetching jobs. Please try again later.');
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchJobs();
-  }, [email]);
+  }, [access_token]);
 
   // Pagination
   const indexOfLastItem = currentPage * itemPerPage;
