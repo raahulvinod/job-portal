@@ -6,9 +6,6 @@ const JobDetails = () => {
   const { id } = useParams();
   const [jobData, setJobData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  console.log(jobData);
 
   useEffect(() => {
     const fetchJobDetails = async () => {
@@ -31,7 +28,6 @@ const JobDetails = () => {
     fetchJobDetails();
   }, [id]);
 
-  // Handle loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-80">
@@ -47,7 +43,6 @@ const JobDetails = () => {
     );
   }
 
-  // Handle case where jobData is null (if API returns no data)
   if (!jobData) {
     return (
       <div className="flex items-center justify-center h-80">
@@ -89,7 +84,8 @@ const JobDetails = () => {
         </span>
         <span className="text-slate-600 text-sm flex gap-1 items-center">
           <LiaRupeeSignSolid className="text-purple-700 h-4 w-4" />
-          {jobData.minPrice} - {jobData.maxPrice}
+          {jobData.minPrice.toLocaleString('en-IN')} -{' '}
+          {jobData.maxPrice.toLocaleString('en-IN')}
         </span>
         <span className="text-slate-600 text-sm flex gap-1 items-center">
           <svg

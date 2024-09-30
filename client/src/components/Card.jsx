@@ -59,7 +59,8 @@ const Card = ({ data }) => {
           <div className="flex items-center gap-2 mt-2">
             <LiaRupeeSignSolid className="text-purple-700 h-4 w-4" />
             <span className="text-slate-600 text-sm">
-              {minPrice} - {maxPrice} per {salaryType.toLowerCase()}
+              {minPrice.toLocaleString('en-IN')} -{' '}
+              {maxPrice.toLocaleString('en-IN')} per {salaryType.toLowerCase()}
             </span>
           </div>
         </div>

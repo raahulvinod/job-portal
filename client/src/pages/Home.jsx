@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Jobs from './Jobs';
 import Sidebar from '../sidebar/Sidebar';
 import Hero from '../components/Hero';
+import FilterModal from '../components/FilterModal';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(false);
@@ -11,6 +12,8 @@ const Home = () => {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -39,6 +42,14 @@ const Home = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return { startIndex, endIndex };
+  };
+
+  const openFilterModal = () => {
+    setIsFilterModalOpen(true);
+  };
+
+  const closeFilterModal = () => {
+    setIsFilterModalOpen(false);
   };
 
   // Next page
@@ -121,6 +132,21 @@ const Home = () => {
       <div className="bg-gray-50 md:grid grid-cols-3 gap-8 lg:px-24 px-4 py-12">
         {/* Job cards */}
         <div className="col-span-2 p-4 rounded">
+          <div className="sm:hidden mb-4 flex justify-end">
+            <button
+              className="bg-purple-900 text-white px-4 py-2 rounded-md"
+              onClick={openFilterModal}
+            >
+              Filter Jobs
+            </button>
+            {isFilterModalOpen && (
+              <FilterModal
+                closeFilterModal={closeFilterModal}
+                handleChange={handleChange}
+                handleClick={handleClick}
+              />
+            )}
+          </div>
           {isLoading ? (
             <div
               className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -168,7 +194,7 @@ const Home = () => {
           ) : null}
         </div>
         {/* Filters (Sidebar) */}
-        <div className="col-span-1  p-4 rounded">
+        <div className="hidden md:block col-span-1  p-4 rounded">
           <Sidebar handleChange={handleChange} handleClick={handleClick} />
         </div>
       </div>

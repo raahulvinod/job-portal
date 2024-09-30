@@ -3,9 +3,9 @@ import JobPostingData from './JobPostingData';
 import WorkExperience from './WorkExperience';
 import EmploymentType from './EmploymentType';
 
-const Sidebar = ({ handleChange, handleClick }) => {
+const Sidebar = ({ handleChange }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 max-w-xs">
+    <div className="bg-white shadow-md rounded-lg p-6 w-full">
       <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
         Filters
       </h3>
