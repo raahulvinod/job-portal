@@ -16,7 +16,7 @@ router.get('/all-jobs', getAllJobs);
 router.get('/:id', getJob);
 router.get('/by-email/:email', getJobByEmail);
 router.delete('/:id', deleteJob);
-router.patch('/:id', updateJob);
+router.patch('/:id', verifyToken, updateJob);
 router.post('/post-job', verifyToken, postJob);
 router.post('/my-jobs', verifyToken, getJobByUser);
 

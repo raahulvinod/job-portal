@@ -26,26 +26,37 @@ export const postJob = async (req, res) => {
 // Update a job by ID
 export const updateJob = async (req, res) => {
   const { id } = req.params;
-  const updates = req.body;
+  const userId = req.user;
+  const updateData = req.body;
 
   try {
-    const updatedJob = await Job.findByIdAndUpdate(id, updates, {
-      new: true, // return the updated document
-      runValidators: true, // ensure the updates match the schema
-    });
+    // Find the job by ID
+    const job = await Job.findById(id);
 
-    if (!updatedJob) {
+    // If no job found
+    if (!job) {
       return res.status(404).json({
         message: 'Job not found',
       });
     }
+
+    // Check if the user is the one who created the job
+    if (job.postedBy.toString() !== userId) {
+      return res.status(403).json({
+        message: 'You are not authorized to update this job',
+      });
+    }
+
+    // Update the job
+    const updatedJob = await Job.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     res.status(200).json({
       message: 'Job updated successfully',
       job: updatedJob,
     });
   } catch (error) {
-    console.error('Error updating job:', error.message);
     res.status(500).json({
       message: 'Error updating job',
       error: error.message,

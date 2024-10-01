@@ -1,14 +1,27 @@
 import { useLoaderData, useParams } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import CreatableSelect from 'react-select/creatable';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import { UserContext } from '../context/userContext';
 
 const UpdateJob = () => {
   const { id } = useParams();
   const { job } = useLoaderData();
+
+  const { userAuth } = useContext(UserContext);
+  const access_token = userAuth?.access_token;
+
+  useEffect(() => {
+    if (!access_token) {
+      toast.error('Access token is missing, please log in again.');
+
+      return;
+    }
+  }, [access_token]);
 
   const {
     _id,
@@ -23,7 +36,7 @@ const UpdateJob = () => {
     companyLogo,
     employmentType,
     description,
-    postedBy,
+    email,
     skills,
   } = job || {};
 
@@ -58,7 +71,7 @@ const UpdateJob = () => {
       setValue('companyLogo', companyLogo);
       setValue('employmentType', employmentType);
       setValue('description', description);
-      setValue('postedBy', postedBy);
+      setValue('email', email);
     }
   }, [job, setValue]);
 
@@ -67,26 +80,31 @@ const UpdateJob = () => {
     data.skills = selectedOptions.map((option) => option.value);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/jobs/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await axios.patch(
+        `${import.meta.env.VITE_SERVER_DOMAIN}/jobs/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
-      const result = await response.json();
-      if (response.ok) {
-        console.log('Job updated successfully:', result);
+      if (response.status === 200) {
         toast.success('Job updated successfully!');
         navigate('/my-job');
       } else {
-        console.error('Failed to update job:', result.message);
-        alert(`Error: ${result.message}`);
+        console.error('Failed to update job:', response.data.message);
+        toast.error(`Error: ${response.data.message}`);
       }
     } catch (error) {
-      console.error('Error updating job:', error);
-      alert('Error updating job. Please try again later.');
+      if (error.response) {
+        console.error('Error updating job:', error.response.data.message);
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        console.error('Error updating job:', error.message);
+        alert('Error updating job. Please try again later.');
+      }
     }
   };
 
@@ -238,7 +256,7 @@ const UpdateJob = () => {
           </div>
 
           <div className="w-full">
-            <label className="block mb-2 text-lg">Job Posted By</label>
+            <label className="block mb-2 text-lg">Email</label>
             <input
               type="email"
               {...register('email')}
