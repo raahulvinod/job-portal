@@ -67,15 +67,26 @@ export const updateJob = async (req, res) => {
 // Delete a job by ID
 export const deleteJob = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user;
 
   try {
-    const deletedJob = await Job.findByIdAndDelete(id);
+    const job = await Job.findById(id);
 
-    if (!deletedJob) {
+    if (!job) {
       return res.status(404).json({
         message: 'Job not found',
       });
     }
+
+    // Check if the job was posted by the logged-in user
+    if (job.postedBy.toString() !== userId) {
+      return res.status(403).json({
+        message: 'You are not authorized to delete this job',
+      });
+    }
+
+    // Delete the job
+    await Job.findByIdAndDelete(id);
 
     res.status(200).json({
       message: 'Job deleted successfully',

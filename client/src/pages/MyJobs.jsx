@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -11,9 +11,18 @@ const MyJobs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemPerPage = 4;
 
-  const {
-    userAuth: { access_token },
-  } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const { userAuth } = useContext(UserContext);
+  const access_token = userAuth?.access_token;
+
+  useEffect(() => {
+    if (!access_token) {
+      toast.error('Access token is missing, please log in again.');
+
+      return;
+    }
+  }, [access_token]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -73,25 +82,30 @@ const MyJobs = () => {
 
   const handleDelete = async (jobId) => {
     if (window.confirm('Are you sure you want to delete this job?')) {
+      console.log(access_token);
       try {
-        const response = await fetch(
-          `http://localhost:8000/api/jobs/${jobId}`,
+        const response = await axios.delete(
+          `${import.meta.env.VITE_SERVER_DOMAIN}/jobs/${jobId}`,
           {
-            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`Failed to delete job: ${response.statusText}`);
+        if (response.status === 200) {
+          toast.success('Job deleted successfully!');
+
+          setJobs(jobs.filter((job) => job._id !== jobId));
         }
-
-        const result = await response.json();
-        toast.success(result.message);
-
-        setJobs(jobs.filter((job) => job._id !== jobId));
       } catch (error) {
-        alert(`Error deleting job: ${error.message}`);
-        console.error('Error deleting job:', error);
+        if (error.response) {
+          console.error('Error deleting job:', error.response.data.message);
+          toast.error(`Error: ${error.response.data.message}`);
+        } else {
+          console.error('Error deleting job:', error.message);
+          toast.error('Error deleting job. Please try again later.');
+        }
       }
     }
   };
