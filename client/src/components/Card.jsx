@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
-import { UserContext } from '../context/userContext';
-import { useContext } from 'react';
 
 const Card = ({ data }) => {
   const {
@@ -15,10 +13,6 @@ const Card = ({ data }) => {
     minPrice,
     salaryType,
   } = data;
-
-  const { userAuth } = useContext(UserContext);
-
-  console.log(userAuth);
 
   const formattedDate = new Date(postingDate).toLocaleDateString('en-US', {
     year: 'numeric',

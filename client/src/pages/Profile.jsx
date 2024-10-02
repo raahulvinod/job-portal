@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
+import AppliedJobs from '../components/AppliedJobs';
 
 const Profile = () => {
   const { userAuth } = useContext(UserContext);
@@ -11,7 +12,7 @@ const Profile = () => {
       case 'summary':
         return <div>Profile Summary Content</div>;
       case 'appliedJobs':
-        return <div>Applied Jobs Content</div>;
+        return <AppliedJobs />;
       case 'jobAlerts':
         return <div>Job Alerts Content</div>;
       default:

@@ -202,7 +202,9 @@ const JobDetails = () => {
       </div>
 
       <button
-        className={`bg-purple-900 text-white font-medium px-4 py-2 rounded-md flex items-center ${
+        className={`${
+          hasApplied ? 'bg-green-600' : 'bg-purple-900'
+        } text-white font-medium px-4 py-2 rounded-md flex items-center ${
           hasApplied || isAdmin ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={handleApplyJob}

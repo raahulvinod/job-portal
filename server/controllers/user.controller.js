@@ -76,3 +76,22 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Fetch Applied Jobs by User
+export const fetchAppliedJobByUser = async (req, res) => {
+  const userId = req.user;
+
+  try {
+    const user = await User.findById(userId).populate({
+      path: 'appliedJobs.jobId',
+      select: 'jobTitle companyName employmentType jobLocation',
+    });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ appliedJobs: user.appliedJobs });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

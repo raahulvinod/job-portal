@@ -45,7 +45,6 @@ const MyJobs = () => {
         setJobs(response.data.jobs);
       } catch (error) {
         console.error('Error fetching job:', error.message);
-        toast.error('Error fetching jobs. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -156,31 +155,8 @@ const MyJobs = () => {
             </div>
 
             <div className="block w-full overflow-x-auto">
-              <table className="items-center bg-transparent w-full border-collapse ">
-                <thead>
-                  <tr>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      No
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Title
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Company Name
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Salary
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Edit
-                    </th>
-                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Delete
-                    </th>
-                  </tr>
-                </thead>
-
-                {isLoading ? (
+              {isLoading ? (
+                <table className="items-center bg-transparent w-full border-collapse ">
                   <tbody>
                     <tr>
                       <td colSpan="6" className="text-center h-20">
@@ -188,7 +164,33 @@ const MyJobs = () => {
                       </td>
                     </tr>
                   </tbody>
-                ) : (
+                </table>
+              ) : jobs.length === 0 ? (
+                <div className="text-center h-20">No jobs posted.</div>
+              ) : (
+                <table className="items-center bg-transparent w-full border-collapse ">
+                  <thead>
+                    <tr>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        No
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Title
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Company Name
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Salary
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Edit
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Delete
+                      </th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {currentJobs.map((job, index) => (
                       <tr key={index}>
@@ -220,8 +222,8 @@ const MyJobs = () => {
                       </tr>
                     ))}
                   </tbody>
-                )}
-              </table>
+                </table>
+              )}
             </div>
           </div>
         </div>
