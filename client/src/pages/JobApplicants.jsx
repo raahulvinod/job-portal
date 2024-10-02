@@ -47,7 +47,10 @@ const JobApplicants = () => {
       case 'appliedUsers':
         return (
           <div className="flex items-center justify-center py-8">
-            <AppliedUsers appliedUsers={appliedUsers} />
+            <AppliedUsers
+              appliedUsers={appliedUsers}
+              setAppliedUsers={setAppliedUsers}
+            />
           </div>
         );
       case 'shortList':
@@ -57,7 +60,12 @@ const JobApplicants = () => {
           </div>
         );
       default:
-        return <AppliedUsers appliedUsers={appliedUsers} />;
+        return (
+          <AppliedUsers
+            appliedUsers={appliedUsers}
+            setAppliedUsers={setAppliedUsers}
+          />
+        );
     }
   };
 

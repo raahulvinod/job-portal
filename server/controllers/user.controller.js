@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import Job from '../models/job.model.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -91,6 +92,87 @@ export const fetchAppliedJobByUser = async (req, res) => {
     }
 
     res.json({ appliedJobs: user.appliedJobs });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Applied Job Status
+// export const updateAppliedJobStatus = async (req, res) => {
+//   const { jobId } = req.params;
+//   const { status, userId } = req.body;
+
+//   console.log('jobId', jobId);
+//   console.log('status', status);
+//   console.log('userId', userId);
+
+//   try {
+//     const user = await User.findById(userId);
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     const appliedJobIndex = user.appliedJobs.findIndex(
+//       (appliedJob) => appliedJob.jobId.toString() === jobId
+//     );
+
+//     if (appliedJobIndex === -1) {
+//       return res.status(404).json({ message: 'Applied job not found' });
+//     }
+
+//     // Update the status of the applied job
+//     user.appliedJobs[appliedJobIndex].status = status;
+//     await user.save();
+
+//     res.status(200).json({ message: 'Status updated successfully', status });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+export const updateAppliedJobStatus = async (req, res) => {
+  const { jobId } = req.params;
+  const { status, userId } = req.body;
+
+  try {
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the job
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    // Update the user's applied job status
+    const appliedJobIndex = user.appliedJobs.findIndex(
+      (appliedJob) => appliedJob.jobId.toString() === jobId
+    );
+    if (appliedJobIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: 'Applied job not found for user' });
+    }
+    user.appliedJobs[appliedJobIndex].status = status;
+    await user.save();
+
+    // Update the job's applied users status
+    const appliedUserIndex = job.appliedUsers.findIndex(
+      (appliedUser) => appliedUser.userId.toString() === userId
+    );
+    if (appliedUserIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "User not found in job's applied users" });
+    }
+    job.appliedUsers[appliedUserIndex].status = status;
+    await job.save();
+
+    res.status(200).json({ message: 'Status updated successfully', status });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
