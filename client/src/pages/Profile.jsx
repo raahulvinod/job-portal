@@ -4,19 +4,21 @@ import AppliedJobs from '../components/AppliedJobs';
 
 const Profile = () => {
   const { userAuth } = useContext(UserContext);
-  const [activeTab, setActiveTab] = useState('summary'); // Set initial tab
+  const [activeTab, setActiveTab] = useState('appliedJobs');
 
   // Function to render tab content
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'summary':
-        return <div>Profile Summary Content</div>;
       case 'appliedJobs':
         return <AppliedJobs />;
       case 'jobAlerts':
-        return <div>Job Alerts Content</div>;
+        return (
+          <div className="flex items-center justify-center py-8">
+            No job alert
+          </div>
+        );
       default:
-        return <div>Profile Summary Content</div>;
+        return <AppliedJobs />;
     }
   };
 
@@ -71,18 +73,6 @@ const Profile = () => {
         {/* Profile Navigation */}
         <hr className="w-full h-px border-neutral-200" />
         <ul className="group flex flex-wrap items-stretch text-[1.15rem] font-semibold list-none border-b-2 border-transparent border-solid active-assignments">
-          <li className="flex mt-2 -mb-[2px]">
-            <button
-              className={`py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 ${
-                activeTab === 'summary'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted'
-              } hover:border-primary`}
-              onClick={() => setActiveTab('summary')}
-            >
-              Profile Summary
-            </button>
-          </li>
           <li className="flex mt-2 -mb-[2px]">
             <button
               className={`py-5 mr-1 sm:mr-3 lg:mr-10 transition-colors duration-200 ease-in-out border-b-2 ${

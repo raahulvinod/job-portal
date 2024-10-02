@@ -99,10 +99,8 @@ const MyJobs = () => {
         }
       } catch (error) {
         if (error.response) {
-          console.error('Error deleting job:', error.response.data.message);
           toast.error(`Error: ${error.response.data.message}`);
         } else {
-          console.error('Error deleting job:', error.message);
           toast.error('Error deleting job. Please try again later.');
         }
       }
@@ -110,7 +108,7 @@ const MyJobs = () => {
   };
 
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
+    <div className="w-full container mx-auto px-4">
       <div className="my-jobs-container">
         <h1 className="text-center p-4 font-semibold">All My Jobs</h1>
         <div className="search-box p-2 text-center mb-2">
@@ -132,7 +130,7 @@ const MyJobs = () => {
       </div>
       {/* List of jobs */}
       <section className="py-1 bg-blueGray-50">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-5">
+        <div className="w-full mb-12 xl:mb-0 px-20 mx-auto mt-5">
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
             <div className="rounded-t mb-0 px-4 py-3 border-0">
               <div className="flex flex-wrap items-center">
@@ -144,10 +142,10 @@ const MyJobs = () => {
                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                   <Link to="/post-job">
                     <button
-                      className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="ml-2 inline-flex items-center justify-center px-8 py-2 text-lg font-semibold text-white transition-all duration-200 bg-purple-600 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                       type="button"
                     >
-                      Post A New Job
+                      Post job
                     </button>
                   </Link>
                 </div>
@@ -197,9 +195,12 @@ const MyJobs = () => {
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                           {indexOfFirstItem + index + 1}
                         </td>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                        <Link
+                          to={`${job._id}`}
+                          className="border-t-0] flex justify-start font-bold text-black cursor-pointer px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
+                        >
                           {job.jobTitle}
-                        </th>
+                        </Link>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                           {job.companyName}
                         </td>
@@ -218,6 +219,14 @@ const MyJobs = () => {
                           >
                             Delete
                           </button>
+                        </td>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                          <Link
+                            to={`${job._id}`}
+                            className="bg-green-700 hover:bg-green-600 py-2 px-6 text-white rounded-full"
+                          >
+                            View Applicants
+                          </Link>
                         </td>
                       </tr>
                     ))}

@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Profile from '../pages/Profile';
 import Discover from '../pages/Discover';
 import JobDetails from '../pages/JobDetails';
+import JobApplicants from '../pages/JobApplicants';
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      { path: '/my-job/:jobId', element: <JobApplicants /> },
     ],
   },
 ]);

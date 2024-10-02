@@ -224,3 +224,47 @@ export const applyJob = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+// Find job applied users
+export const findAppliedUsers = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the job by ID
+    const job = await Job.findById(id).populate(
+      'appliedUsers.userId',
+      'fullname email'
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        message: 'Job not found',
+      });
+    }
+
+    // Get the list of applied users for this job
+    const appliedUsers = job.appliedUsers.map((appliedUser) => ({
+      userId: appliedUser.userId._id,
+      name: appliedUser.userId.fullname,
+      email: appliedUser.userId.email,
+      status: appliedUser.status,
+    }));
+
+    res.status(200).json({
+      message: 'Job and applied users fetched successfully',
+      jobId: job._id,
+      jobTitle: job.title,
+      companyName: job.companyName,
+      jobLocation: job.jobLocation,
+      employmentType: job.employmentType,
+      postingDate: job.postingDate,
+      companyLogo: job.companyLogo,
+      appliedUsers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching job and applied users',
+      error: error.message,
+    });
+  }
+};

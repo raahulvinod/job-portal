@@ -4,12 +4,15 @@ import { UserContext } from '../context/userContext';
 import axios from 'axios';
 
 const AppliedJobs = () => {
+  const [jobData, setJobData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const { userAuth } = useContext(UserContext);
   const access_token = userAuth?.access_token;
-  const [jobData, setJobData] = useState([]);
 
   useEffect(() => {
-    const fetchJobDetails = async () => {
+    const fetchJobs = async () => {
+      setLoading(true);
       try {
         const { data } = await axios.post(
           `${import.meta.env.VITE_SERVER_DOMAIN}/users/applied-jobs`,
@@ -22,11 +25,21 @@ const AppliedJobs = () => {
         setJobData(data.appliedJobs);
       } catch (err) {
         console.error('Failed to fetch job details', err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchJobDetails();
+    fetchJobs();
   }, [access_token]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-80">
+        <div className="animate-spin rounded-full border-4 border-solid border-current border-r-transparent h-8 w-8" />
+      </div>
+    );
+  }
 
   if (!jobData.length) {
     return (
@@ -37,8 +50,6 @@ const AppliedJobs = () => {
       </div>
     );
   }
-
-  console.log(jobData);
 
   return (
     <div className="p-6 bg-white rounded-lg max-w-7xl mx-auto space-y-4">
