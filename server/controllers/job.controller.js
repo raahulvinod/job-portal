@@ -1,4 +1,5 @@
 import Job from '../models/job.model.js';
+import User from '../models/user.model.js';
 
 export const postJob = async (req, res) => {
   const body = req.body;
@@ -188,5 +189,38 @@ export const getJobByUser = async (req, res) => {
       message: 'Error fetching jobs',
       error: error.message,
     });
+  }
+};
+
+// Apply job
+export const applyJob = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user;
+
+  try {
+    const job = await Job.findById(id);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    const alreadyApplied = job.appliedUsers.some(
+      (appliedUser) => appliedUser.userId.toString() === userId
+    );
+    if (alreadyApplied) {
+      return res
+        .status(400)
+        .json({ message: 'You have already applied for this job' });
+    }
+
+    job.appliedUsers.push({ userId, status: 'Applied' });
+    await job.save();
+
+    const user = await User.findById(userId);
+    user.appliedJobs.push({ jobId: id, status: 'Applied' });
+    await user.save();
+
+    res.status(200).json({ message: 'Job application successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
   }
 };
