@@ -38,7 +38,6 @@ const CreateJob = () => {
       );
 
       if (response.status === 201) {
-        console.log('Job created successfully:', response.data);
         toast.success('Job created successfully!');
         navigate('/my-job');
       }

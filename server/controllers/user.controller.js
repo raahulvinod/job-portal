@@ -34,6 +34,8 @@ export const login = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+
+
     const token = generateToken(user._id);
     res.json({ token, user });
   } catch (error) {

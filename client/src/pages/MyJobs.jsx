@@ -81,7 +81,6 @@ const MyJobs = () => {
 
   const handleDelete = async (jobId) => {
     if (window.confirm('Are you sure you want to delete this job?')) {
-      console.log(access_token);
       try {
         const response = await axios.delete(
           `${import.meta.env.VITE_SERVER_DOMAIN}/jobs/${jobId}`,

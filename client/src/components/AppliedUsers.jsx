@@ -35,7 +35,6 @@ const AppliedUsers = ({ appliedUsers, setAppliedUsers }) => {
         )
       );
     } catch (error) {
-      console.log(error);
       setSuccessMessage('Error updating status. Please try again.');
     }
   };

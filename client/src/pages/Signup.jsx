@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Validation schema using Yup
 const SignupSchema = Yup.object().shape({
@@ -31,31 +32,24 @@ const Signup = () => {
               validationSchema={SignupSchema}
               onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
-                  const response = await fetch(
-                    'http://localhost:8000/api/users/signup',
-                    {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(values),
-                    }
+                  const response = await axios.post(
+                    `${import.meta.env.VITE_SERVER_DOMAIN}/users/signup`,
+                    values
                   );
 
-                  if (!response.ok) {
-                    const errorData = await response.json();
+                  if (response.status !== 201) {
+                    const errorData = response.data;
                     setErrors({
                       email: errorData.message || 'An error occurred',
                     });
                     return;
                   }
 
-                  const data = await response.json();
                   toast.success('User registered successfully');
                   navigate('/login');
                 } catch (error) {
-                  console.error('Error:', error);
-                  setErrors({ email: 'Network error, please try again' });
+                  toast.error(error.response.data.message);
+                  setErrors({ email: error.response.data.message });
                 } finally {
                   setSubmitting(false);
                 }

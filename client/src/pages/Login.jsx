@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { UserContext } from '../context/userContext';
 import { storeInSession } from '../utils/sessions';
@@ -30,26 +31,12 @@ const Login = () => {
               validationSchema={LoginSchema}
               onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
-                  const response = await fetch(
-                    'http://localhost:8000/api/users/login',
-                    {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(values),
-                    }
+                  const response = await axios.post(
+                    `${import.meta.env.VITE_SERVER_DOMAIN}/users/login`,
+                    values
                   );
 
-                  if (!response.ok) {
-                    const errorData = await response.json();
-                    setErrors({
-                      email: errorData.message || 'An error occurred',
-                    });
-                    return;
-                  }
-
-                  const data = await response.json();
+                  const data = response.data;
 
                   // Store token and user data in session storage
                   storeInSession('token', data.token);
@@ -61,11 +48,16 @@ const Login = () => {
                     access_token: data.token,
                   });
 
-                  toast.success('login successfully');
+                  toast.success('Login successfully');
                   navigate('/');
                 } catch (error) {
-                  console.error('Error:', error);
-                  setErrors({ email: 'Network error, please try again' });
+                  if (error.response && error.response.data) {
+                    setErrors({
+                      email: error.response.data.message || 'An error occurred',
+                    });
+                  } else {
+                    setErrors({ email: 'Network error, please try again' });
+                  }
                 } finally {
                   setSubmitting(false);
                 }
