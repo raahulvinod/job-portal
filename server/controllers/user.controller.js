@@ -35,7 +35,6 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-
     const token = generateToken(user._id);
     res.json({ token, user });
   } catch (error) {
@@ -100,38 +99,6 @@ export const fetchAppliedJobByUser = async (req, res) => {
 };
 
 // Update Applied Job Status
-// export const updateAppliedJobStatus = async (req, res) => {
-//   const { jobId } = req.params;
-//   const { status, userId } = req.body;
-
-//   console.log('jobId', jobId);
-//   console.log('status', status);
-//   console.log('userId', userId);
-
-//   try {
-//     const user = await User.findById(userId);
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     const appliedJobIndex = user.appliedJobs.findIndex(
-//       (appliedJob) => appliedJob.jobId.toString() === jobId
-//     );
-
-//     if (appliedJobIndex === -1) {
-//       return res.status(404).json({ message: 'Applied job not found' });
-//     }
-
-//     // Update the status of the applied job
-//     user.appliedJobs[appliedJobIndex].status = status;
-//     await user.save();
-
-//     res.status(200).json({ message: 'Status updated successfully', status });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 
 export const updateAppliedJobStatus = async (req, res) => {
   const { jobId } = req.params;

@@ -13,6 +13,7 @@ import Profile from '../pages/Profile';
 import Discover from '../pages/Discover';
 import JobDetails from '../pages/JobDetails';
 import JobApplicants from '../pages/JobApplicants';
+import PageNotFound from '../pages/PageNotFound';
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
         ),
       },
       { path: '/my-job/:jobId', element: <JobApplicants /> },
+      { path: '*', element: <PageNotFound /> },
     ],
   },
 ]);
