@@ -46,11 +46,17 @@ const JobApplicants = () => {
     switch (activeTab) {
       case 'appliedUsers':
         return (
-          <div className="flex items-center justify-center py-8">
-            <AppliedUsers
-              appliedUsers={appliedUsers}
-              setAppliedUsers={setAppliedUsers}
-            />
+          <div>
+            {appliedUsers?.length > 0 ? (
+              <AppliedUsers
+                appliedUsers={appliedUsers}
+                setAppliedUsers={setAppliedUsers}
+              />
+            ) : (
+              <div className="text-gray-700 text-center py-8">
+                No applicants available.
+              </div>
+            )}
           </div>
         );
       case 'shortList':
@@ -61,10 +67,18 @@ const JobApplicants = () => {
         );
       default:
         return (
-          <AppliedUsers
-            appliedUsers={appliedUsers}
-            setAppliedUsers={setAppliedUsers}
-          />
+          <div>
+            {appliedUsers?.length > 0 ? (
+              <AppliedUsers
+                appliedUsers={appliedUsers}
+                setAppliedUsers={setAppliedUsers}
+              />
+            ) : (
+              <div className="text-gray-700 text-center py-8">
+                No applicants available.
+              </div>
+            )}
+          </div>
         );
     }
   };

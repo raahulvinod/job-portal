@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AppliedUsers = ({ appliedUsers, setAppliedUsers }) => {
   const { jobId } = useParams();
@@ -27,7 +28,7 @@ const AppliedUsers = ({ appliedUsers, setAppliedUsers }) => {
 
       // Update success message
       setSuccessMessage(`Status updated to ${newStatus} for ${name}.`);
-
+      toast.success(`Status updated to ${newStatus}`);
       setAppliedUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.userId === userId ? { ...user, status: newStatus } : user

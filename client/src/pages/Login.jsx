@@ -61,7 +61,7 @@ const Login = () => {
                     access_token: data.token,
                   });
 
-                  toast.success('User login successfully');
+                  toast.success('login successfully');
                   navigate('/');
                 } catch (error) {
                   console.error('Error:', error);
