@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import { UserContext } from '../context/userContext';
 import { storeInSession } from '../utils/sessions';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
@@ -16,8 +17,45 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const { userAuth, setUserAuth } = useContext(UserContext);
-
   const navigate = useNavigate();
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
+    try {
+      const { user } = await signInWithPopup(auth, provider);
+      // const user = result.user;
+
+      // Prepare user data to send to your backend
+      const userData = {
+        fullname: user.displayName,
+        email: user.email,
+        googleId: user.uid,
+        provider: 'google',
+      };
+
+      // Send user data to your backend API
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_SERVER_DOMAIN}/users/google-auth`,
+        userData
+      );
+
+      storeInSession('token', data.token);
+      storeInSession('user', JSON.stringify(data.user));
+
+      setUserAuth({
+        ...data.user,
+        access_token: data.token,
+      });
+
+      toast.success('Login successfully');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-8">
@@ -116,6 +154,7 @@ const Login = () => {
                     Login
                   </button>
                   <button
+                    onClick={handleGoogleSignIn}
                     type="button"
                     className="w-full flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                   >

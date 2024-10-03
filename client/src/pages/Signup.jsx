@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { storeInSession } from '../utils/sessions.jsx';
+
+import app from '../firebase/firebase.config.js';
+import { UserContext } from '../context/userContext.jsx';
 
 // Validation schema using Yup
 const SignupSchema = Yup.object().shape({
@@ -19,6 +26,47 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
   const navigate = useNavigate();
+
+  const { setUserAuth } = useContext(UserContext);
+  const auth = getAuth();
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Prepare user data to send to your backend
+      const userData = {
+        fullname: user.displayName,
+        email: user.email,
+        googleId: user.uid,
+        provider: 'google',
+      };
+
+      // Send user data to your backend API
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_SERVER_DOMAIN}/users/google-auth`,
+        userData
+      );
+
+      storeInSession('token', data.token);
+      storeInSession('user', JSON.stringify(data.user));
+
+      setUserAuth({
+        ...data.user,
+        access_token: data.token,
+      });
+
+      toast.success('Login successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-8">
@@ -128,7 +176,10 @@ const Signup = () => {
               )}
             </Formik>
 
-            <button className="w-full flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
               <svg
                 className="h-6 w-6 mr-2"
                 xmlns="http://www.w3.org/2000/svg"
