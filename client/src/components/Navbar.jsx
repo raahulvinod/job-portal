@@ -37,11 +37,11 @@ const Navbar = () => {
               href="/"
               className="flex rounded outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
-              {/* <img
+              <img
                 className="w-auto h-8"
-                src="https://d33wubrfki0l68.cloudfront.net/682a555ec15382f2c6e7457ca1ef48d8dbb179ac/f8cd3/images/logo.svg"
+                src="https://i.ibb.co/18T4Mrc/android-chrome-512x512.png"
                 alt="Logo"
-              /> */}
+              />
               <h1 className="w-auto text-2xl font-bold">JobHatch</h1>
             </a>
           </div>
