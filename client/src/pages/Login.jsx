@@ -25,9 +25,7 @@ const Login = () => {
 
     try {
       const { user } = await signInWithPopup(auth, provider);
-      // const user = result.user;
 
-      // Prepare user data to send to your backend
       const userData = {
         fullname: user.displayName,
         email: user.email,
@@ -35,7 +33,6 @@ const Login = () => {
         provider: 'google',
       };
 
-      // Send user data to your backend API
       const { data } = await axios.post(
         `${import.meta.env.VITE_SERVER_DOMAIN}/users/google-auth`,
         userData
