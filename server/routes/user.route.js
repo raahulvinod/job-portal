@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/google', googleAuth);
+router.post('/google-auth', googleAuth);
 router.get('/user', verifyToken, getUser);
 router.post('/applied-jobs', verifyToken, fetchAppliedJobByUser);
 router.patch('/update-status/:jobId', verifyToken, updateAppliedJobStatus);

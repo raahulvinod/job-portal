@@ -44,19 +44,46 @@ export const login = async (req, res) => {
 
 // Google Authentication
 export const googleAuth = async (req, res) => {
-  const { email, name, googleId } = req.body;
+  const { email, fullname, googleId } = req.body;
+
   try {
+    // Check if a user with the given email already exists
     let user = await User.findOne({ email });
-    if (!user) {
-      const randomPassword = crypto.randomBytes(8).toString('hex');
-      user = await User.create({
-        fullname: name,
-        email,
-        googleId,
-        password: randomPassword,
-        provider: 'google',
-      });
+
+    if (user) {
+      // If the user exists and previously registered with Google, log them in
+      if (user.provider === 'google') {
+        const token = generateToken(user._id);
+        return res.json({ token, user });
+      }
+
+      // If the user exists but was created with email/password, link Google account
+      else if (user.provider === 'email') {
+        // Allow user to link their Google account with their email-based account
+        user.googleId = googleId;
+        user.provider = 'google';
+
+        await user.save();
+
+        const token = generateToken(user._id);
+        return res.json({ token, user });
+      } else {
+        return res
+          .status(400)
+          .json({ message: 'This email is registered with another method.' });
+      }
     }
+
+    // If the user does not exist, create a new user with Google
+    const randomPassword = crypto.randomBytes(8).toString('hex');
+    user = await User.create({
+      fullname,
+      email,
+      googleId,
+      password: randomPassword,
+      provider: 'google',
+    });
+
     const token = generateToken(user._id);
     res.json({ token, user });
   } catch (error) {

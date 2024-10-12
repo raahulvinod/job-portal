@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import Card from '../components/Card';
 import Jobs from './Jobs';
@@ -20,8 +21,9 @@ const Home = () => {
     const fetchJobs = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/jobs/all-jobs');
-        const { jobs } = await response.json();
+        const { jobs } = await axios.get(
+          `${import.meta.env.VITE_SERVER_DOMAIN}/jobs/all-jobs`
+        );
         setJobs(jobs);
       } catch (error) {
         console.error('Error fetching jobs:', error);
@@ -29,6 +31,7 @@ const Home = () => {
         setIsLoading(false);
       }
     };
+
     fetchJobs();
   }, []);
 
