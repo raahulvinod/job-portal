@@ -21,10 +21,11 @@ const Home = () => {
     const fetchJobs = async () => {
       setIsLoading(true);
       try {
-        const { jobs } = await axios.get(
+        const response = await axios.get(
           `${import.meta.env.VITE_SERVER_DOMAIN}/jobs/all-jobs`
         );
-        setJobs(jobs);
+
+        setJobs(response.data.jobs);
       } catch (error) {
         console.error('Error fetching jobs:', error);
       } finally {
@@ -36,7 +37,7 @@ const Home = () => {
   }, []);
 
   // Filter jobs by title and selected category
-  const filteredItems = jobs.filter(
+  const filteredItems = jobs?.filter(
     (job) => job.jobTitle.toLowerCase().indexOf(query.toLowerCase()) !== -1
   );
 
@@ -57,7 +58,7 @@ const Home = () => {
 
   // Next page
   const nextPage = () => {
-    if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredItems?.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -95,13 +96,13 @@ const Home = () => {
     }
 
     const { startIndex, endIndex } = calculatePageRange();
-    let paginatedJobs = filteredJobs.slice(startIndex, endIndex);
+    let paginatedJobs = filteredJobs?.slice(startIndex, endIndex);
 
     return {
-      paginatedJobs: paginatedJobs.map((data, i) => (
+      paginatedJobs: paginatedJobs?.map((data, i) => (
         <Card key={i} data={data} />
       )),
-      totalFilteredJobs: filteredJobs.length, // Return the total count of filtered jobs
+      totalFilteredJobs: filteredJobs?.length, // Return the total count of filtered jobs
     };
   };
 
@@ -161,12 +162,12 @@ const Home = () => {
                 </span>
               </div>
             </div>
-          ) : paginatedJobs.length > 0 ? (
+          ) : paginatedJobs?.length > 0 ? (
             <Jobs result={paginatedJobs} />
           ) : (
             <>
               <h3 className="text-lg font-bold mb-4">
-                {paginatedJobs.length} Jobs
+                {paginatedJobs?.length} Jobs
               </h3>
               <p>No jobs found</p>
             </>
